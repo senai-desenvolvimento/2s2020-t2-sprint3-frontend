@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tabela Frutas</title>
+</head>
+<body onload="listar()">
+    <input type="text" placeholder="Informe a fruta" required id='fruta' />
+    <button type="button" id='btnCadastrar'>Cadastrar</button>
+    <button type="button" id='btnRemover'>remover</button>
+    <table>
+        <caption>Frutas</caption>
+        <thead>
+            <th>
+                Nome
+            </th>
+        </thead>
+        <tbody id="tabela-lista-corpo">
+            
+        </tbody>
+    </table>   
+
+    <script>
+        //Array de string
+        let frutas = ['maça', 'pera', 'melancia', 'melão'];
+        let btnCadastrar = document.querySelector('#btnCadastrar');
+        let btnRemover = document.querySelector('#btnRemover');
+
+        btnCadastrar.addEventListener('click', cadastrar);
+        btnRemover.addEventListener('click', remover);
+
+        //Array de inteiros
+        //let numeros = [5, 6, 7];
+
+        //Array de Objetos
+        //let pessoas = [{ id : 1, nome : 'Fernando'},{ id : 2, nome : 'Rodrigo'}]
+
+        //Lista os itens do array
+        function listar(){
+            //Pega o elemento e armazena na variavel
+            let corpoTabela = document.querySelector('#tabela-lista-corpo');
+
+            //limpa o elemento corpoTabela
+            corpoTabela.innerHTML = "";
+            //Declara variaveis
+            let linha, colunaNome;
+
+            //Percorre o array frutas
+            //item representa cada elemento/objeto no array
+            frutas.forEach(item => {
+                //Criação do elemento tr
+                linha = document.createElement('tr');
+                //Criação do elemento td
+                colunaNome = document.createElement('td');
+                //Preenche o elemento td com o dado do array
+                colunaNome.innerHTML = item;
+
+                //Inclui a coluna na linha
+                linha.appendChild(colunaNome);
+
+                //Inclui a linha no tbody da tabela
+                corpoTabela.appendChild(linha);
+            })
+        }
+    
+        //Cadastrar uma nova fruta no array
+        function cadastrar(event){
+            event.preventDefault();
+            //Pega o elemento fruta no documento
+            let fruta = document.querySelector('#fruta');
+            //Adiciona a fruta ao array
+            frutas.push(fruta.value);
+
+            //Chama a função listar
+            listar();
+
+            //Apaga o conteudo do input
+            fruta.value = "";
+
+            alert('Fruta cadastrada');
+        }
+    
+        //remove uma fruta do array
+        function remover(event){
+            event.preventDefault();
+
+            let fruta = document.querySelector('#fruta');
+
+            //Percorre todos os itens do array, ao encontrar remove o item
+            // frutas.forEach(item => {
+            //     if(item === fruta.value){
+            //         //remove fruta
+            //     }      
+            // });
+
+            let index = frutas.indexOf(fruta.value);
+
+            if(index > -1){
+                frutas.splice(index, 1);
+                alert('Fruta removida');
+                listar();
+            } else {
+                alert('Fruta não encontrada');
+            }
+            
+        }
+    </script>
+</body>
+</html>

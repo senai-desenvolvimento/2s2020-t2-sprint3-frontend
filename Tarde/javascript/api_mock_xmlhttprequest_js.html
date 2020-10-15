@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Api XMLHTTPRequest</title>
+</head>
+<body onload="listar()">
+    
+    <form id="form">
+        <input type="text" id="categoria" required>
+
+        <button type="button" onclick="cadastrar()" id="btnCadastrar">Cadastrar</button>
+        <button type="button" onclick="remover()" id="btnRemover">Remover</button>
+
+        <table>
+            <caption>Categorias</caption>
+            <thead>
+                <th>
+                    Id
+                </th>
+                <th>
+                    Nome
+                </th>
+            </thead>
+            <tbody id="tabela-lista-corpo"></tbody>
+        </table>
+    </form>
+
+</body>
+<script>
+    //endpoint da api
+    let url = 'https://5f7f4f9bd6aabe00166f0238.mockapi.io/api/categorias';
+    let categoria = document.querySelector('#categoria');
+    //armazena as categorias retornadas da api para que sejam global, visiveis em outras funções
+    let categorias = [];
+
+    function listar(){
+        //Cria uma instancia do objeto XmlHttpRequest para transferir os dados do cliente/servidor
+        let xhrGet = new XMLHttpRequest();
+        //define a função caso tenha sucesso
+        xhrGet.onload = listarSucesso;
+        //define a função caso ocorra um erro
+        xhrGet.onerror = listarErro;
+        //abre a conexão com a api passando o verbo e a url/endpoint
+        xhrGet.open('GET', url);
+        //envia para Api
+        xhrGet.send();
+    }
+
+    function listarSucesso(){
+        console.log('sucesso');
+        //pega o retorno do this/XmlHttpRequest - retorno da api
+        const data = this.responseText;
+        //converte para Array fazendo um Json parse
+        categorias = JSON.parse(data)
+        //mostra na tela
+        console.log(categorias);
+    }
+
+    //caso ocorra algum erro na chamada da api caiu nesta função, err é a descrição do erro.
+    function listarErro(err){
+        console.error(err);
+    }
+
+    function cadastrar(){
+        event.preventDefault();
+
+        let xhrPost = new XMLHttpRequest();
+        xhrPost.onload = cadastroSucesso;
+        xhrPost.onerror = cadastroErro;
+        //Envia os dados para api usando o metodo POST
+        xhrPost.open('POST', url);
+        //define qual o tipo de conteúdo do Header
+        xhrPost.setRequestHeader('content-type', 'application/json');
+
+        //Cria o objeto com o nome da categoria
+        let params = {
+            name : categoria.value
+        }
+
+        //Para enviar no post eu converto meu objeto para json
+        xhrPost.send(JSON.stringify(params))
+    }
+
+    function cadastroSucesso(){
+        console.log('Sucessooooooooo');
+        console.log(this.status);
+        console.log(JSON.parse(this.responseText));
+
+        listar();
+    }
+
+    function cadastroErro(err){
+        console.log('Errrrroooooouuuuuuuuuuuuu ' + err );
+    }
+
+    function remover(){
+        let xhrDelete = new XMLHttpRequest();
+        xhrDelete.onload = removeSucesso;
+        xhrDelete.onerror = removeErro;
+        xhrDelete.open('DELETE', url + '/' + categoria.value);
+        xhrDelete.send();
+    }
+
+    function removeSucesso(){
+        console.log('Sucessooooooooo');
+        console.log(this.status);
+        console.log(JSON.parse(this.responseText));
+
+        listar();
+    }
+
+    function removeErro(){
+        console.log('Errrrroooooouuuuuuuuuuuuu ' + err );
+    }
+
+</script>
+</html>

@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contatos</title>
+</head>
+<body onload="listar()">
+    <input type="text" id="nome" placeholder="Nome Completo" required/>
+    <input type="text" id="email" placeholder="Email" required/>
+    <input type="text" id="telefone" placeholder="Telefone" required/>
+
+    <button type="button" id='btnCadastrar'>Cadastrar</button>
+    <button type="button" id='btnRemover'>Remover</button>
+
+    <table>
+        <caption>Contatos</caption>
+        <thead>
+            <th>Nome</th>
+            <th>Email</th>
+            <th>Telefone</th>
+        </thead>
+        <tbody id="tabela-lista-corpo"></tbody>
+    </table>   
+
+    <script>
+        let contatos = [{ 
+                            nome : 'Fernando',
+                            email : 'fernando.guerra@sp.senai.br',
+                            telefone : '11972084334'
+                        }]
+
+        //Crio um objeto a partir do elemento no documento
+        let btnCadastrar = document.querySelector('#btnCadastrar');
+        //Adiciono um evento de click ao botao chamando a função cadastrar
+        btnCadastrar.addEventListener('click', cadastrar);
+
+        let btnRemover = document.querySelector('#btnRemover');
+        btnRemover.addEventListener('click', remover);
+
+        //Cria um objeto a partir dos elementos do formulário
+        let nome = document.querySelector('#nome');
+        let email = document.querySelector('#email');
+        let telefone = document.querySelector('#telefone');
+
+        function listar(){
+            let corpoTabela = document.querySelector('#tabela-lista-corpo'); //<tbody></tbody>
+            //Limpa o tbody da tabela
+            corpoTabela.innerHTML = "";
+
+            //Irá armazenar os elemento tr e td
+            let linha, colunaNome, colunaEmail, colunaTelefone;
+
+            //Percorrendo o array
+            //Item é a referencia ao meu elemento/objeto no array
+            contatos.forEach(item => {
+                linha = document.createElement('tr'); //<tr></tr>
+
+                colunaNome = document.createElement('td');//<td></td>
+                colunaNome.innerText = item.nome; //<td>Fernando</td>
+                linha.appendChild(colunaNome); //<tr><td>Fernando</td></tr>
+
+                colunaEmail = document.createElement('td');//<td></td>
+                colunaEmail.innerText = item.email; //<td>fernando.guerra@sp.senai.br</td>
+                linha.appendChild(colunaEmail); //<tr><td>Fernando</td><td>fernando.guerra@sp.senai.br</td></tr>
+
+                colunaTelefone = document.createElement('td');//<td></td>
+                colunaTelefone.innerText = item.telefone; //<td>11972084334</td>
+                linha.appendChild(colunaTelefone); //<tr><td>Fernando</td><td>fernando.guerra@sp.senai.br</td><td>11972084334</td></tr>
+
+                corpoTabela.appendChild(linha); //<tbody><tr><td>Fernando</td><td>fernando.guerra@sp.senai.br</td><td>11972084334</td></tr></tbody>
+            });
+
+            limparCampos();
+        }                
+    
+        function cadastrar(event){
+            event.preventDefault();
+
+            try {
+                
+
+                //Cria um objeto com os dados do formulário
+                let contato = {
+                    nome : nome.value,
+                    email : email.value,
+                    telefone : telefone.value
+                }
+
+                contatos.push(contato);
+
+                alert('Contato cadastrado');
+
+                listar();
+
+                
+            } catch (error) {
+                alert('Ocorreu um erro, entre em contato no email email@email.com');
+            }
+        }
+
+        function remover(event){
+            event.preventDefault();
+
+            //Usado em Array de string, int, array simples
+            //let index = contatos.indexOf(email.value);
+            
+            let index = contatos.findIndex(item => item.email === email.value);
+            console.log(index);
+
+            //existindo exclui
+            if(index > -1){
+                contatos.splice(index, 1)
+                alert('Contato removido');
+
+                listar();
+            } else {
+                alert('Contato não encontrado');
+            }
+        }
+
+        //Metodo FindIndex
+        // function buscarContato(email){
+        //     contatos.forEach((contato, index) => {
+        //         if(contato.email === email){
+        //             return index;
+        //         }
+        //     })
+
+        //     return -1;
+        // }
+
+        function limparCampos(){
+            nome.value = "";
+            email.value = "";
+            telefone.value = "";
+
+            nome.focus();
+        }
+    </script>
+</body>
+</html>

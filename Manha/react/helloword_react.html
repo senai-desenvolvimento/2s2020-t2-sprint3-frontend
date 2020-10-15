@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>Hello World.</h1>
+
+    <div id="root"></div>
+
+    <script crossorigin src="https://unpkg.com/react@16/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+
+    <script>
+        // let h1 = document.createElement(h1);
+        // h1.innerHtml = "Hello Word Javascript";
+        // document.querySelector('#root').innerHtml = h1
+
+        //Crio um elemento usando a biblioteca react
+        let h1 = React.createElement("h1", null, 'Hello Word React');
+        //Renderizo o elemento no virtual dom
+        ReactDOM.render(h1, document.querySelector('#root'));
+
+    </script>
+</body>
+</html>

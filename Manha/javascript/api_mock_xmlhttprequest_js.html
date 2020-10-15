@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Api XMLHTTPRequest</title>
+</head>
+<body onload="listar()">
+    
+    <form id="form">
+        <input type="text" id="categoria" required>
+
+        <button type="button" onclick="cadastrar()"  id="btnCadastrar">Cadastrar</button>
+        <button type="button" onclick="remover()"  id="btnRemover">Remover</button>
+
+        <table>
+            <caption>Categorias</caption>
+            <thead>
+                <th>
+                    Id
+                </th>
+                <th>
+                    Nome
+                </th>
+            </thead>
+            <tbody id="tabela-lista-corpo"></tbody>
+        </table>
+    </form>
+
+</body>
+<script>
+    let url = 'https://5f7f09a0d6aabe00166efcdc.mockapi.io/api/categorias';
+    let categoria = document.querySelector('#categoria');
+
+    function listar(){
+        //Criei o objeto HttpRequest
+        let xhr = new XMLHttpRequest();
+        //Defino a função no caso de sucesso
+        xhr.onload = listarSucesso;
+        //Defino a função em caso de erro
+        xhr.onerror = listarErro;
+        //Abro a conexão e defino o verbo e a url do endpoint
+        xhr.open('GET', url);
+        //Envio para o servidor
+        xhr.send();
+    }
+
+    function listarSucesso(){
+        if(this.status === 200){
+            console.log(this.responseText);
+            let data = JSON.parse(this.responseText);
+            console.log(data);
+        }
+    }
+
+    function listarErro(err){
+        console.log(err);
+    }
+
+    function cadastrar(){
+        event.preventDefault();
+
+        //cria o objeto
+        const params = {
+            name : categoria.value
+        }
+
+        let xhrPost = new XMLHttpRequest();
+        xhrPost.onload = cadastroSucesso;
+        xhrPost.onerror = cadastroErro;
+        //Envia por post
+        xhrPost.open('POST', url);
+        xhrPost.setRequestHeader('content-type', 'application/json');
+        //Converte para json e envia o objeto
+        xhrPost.send(JSON.stringify(params));
+    }
+
+    function cadastroSucesso(){
+        if(this.status === 201){
+            alert('Categoria cadastrada');
+
+            listar();
+        }
+    }
+
+    function cadastroErro(err){
+        console.log('Erro no cadastro: ' + err);
+    }
+
+    function remover(){
+        event.preventDefault();
+
+        //cria o objeto
+        const params = {
+            name : categoria.value
+        }
+
+        let xhrDelete = new XMLHttpRequest();
+        xhrDelete.onload = removeSucesso;
+        xhrDelete.onerror = removeErro;
+        //Envia por post
+        xhrDelete.open('DELETE', url + '/' + categoria.value);
+        //Converte para json e envia o objeto
+        xhrDelete.send();
+    }
+
+    function removeSucesso(){
+        
+            alert('Categoria removida');
+
+            listar();
+    }
+
+    function removeErro(err){
+        console.log('Erro no remoçao: ' + err);
+    }
+</script>
+</html>

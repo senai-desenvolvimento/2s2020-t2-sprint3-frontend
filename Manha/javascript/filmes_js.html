@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <title>Filmes</title>
+</head>
+<body onload="listar()">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="#">Navbar</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav">
+            <li class="nav-item active">
+              <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">Categorias</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">Filmes</a>
+            </li>
+          </ul>
+        </div>
+      </nav>
+
+      <div class="jumbotron jumbotron-fluid">
+        <div class="container">
+          <h1 class="display-3">Filmes</h1>
+          <p class="lead">Cadastre e visualize filmes cadastrados</p>
+        </div>
+      </div>
+
+    <div class="container">
+        <div class="bd-example" >
+        <form id="formFilme">
+            <input type="hidden" id="filmeId" />
+            <div class="form-group">
+              <label for="nome">Nome</label>
+              <input type="text" class="form-control" id="nome" aria-describedby="nome" placeholder="Informe o Nome">
+            </div>
+            <div class="form-group">
+              <label for="categoria">Categoria</label>
+              <input type="text" class="form-control" id="categoria" placeholder="Informe a Categoria">
+            </div>
+            <div class="form-group">
+                <label for="ano">Ano de Lançamento</label>
+                <input type="text" class="form-control small" id="anoLancamento" placeholder="Informe o Ano de Lançamento">
+              </div>
+              <button type="button" onclick="novoFilme()" class="btn btn-secondary">Cancelar</button>
+            <button type="button" onclick="salvar()" class="btn btn-success">Salvar</button>
+        </form>
+
+        <table class="table" style="margin-top: 40px;">
+            <thead>
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col">Nome</th>
+                <th scope="col">Categoria</th>
+                <th scope="col">Ano Lançamento</th>
+                <th scope="col">Ações</th>
+                <th scope="col"><button type="reset" class="btn btn-primary" onclick="novoFilme()">Novo Filme</button></th>
+              </tr>
+            </thead>
+            <tbody id="tabela-lista-corpo"></tbody>
+        </table>
+    </div>
+    
+    <script>
+        let url = 'https://5f7f4f9bd6aabe00166f0238.mockapi.io/api/filmes';
+
+        // function listar(dados){
+        //     console.log('listar');
+            
+        // }
+
+        //Cria uma constante listar
+        const listar = () => {
+           //Por default é Get
+            //Utiliza promisse para dar continuidade ao processo
+            fetch(url)
+                .then(response => response.json())
+                    .then(dados => {
+                        console.log(dados);
+
+                        preencherTabela(dados);
+                    })
+                    .catch(err => console.error(err));
+
+        }
+
+        const preencherTabela = (dados) => {
+            let corpoTabela = document.querySelector('#tabela-lista-corpo');
+            corpoTabela.innerHTML = "";
+            let linha, colunaId, colunaNome, colunaCategoria, colunaAnoLancamento, colunaAcao;
+            dados.forEach(item => {
+                linha = document.createElement("tr");
+
+                colunaId = document.createElement("td");
+                colunaId.innerText = item.id;
+
+                colunaNome = document.createElement("td");
+                colunaNome.innerText = item.nome;
+
+                colunaCategoria = document.createElement("td");
+                colunaCategoria.innerText = item.categoria;
+
+                colunaAnoLancamento = document.createElement("td");
+                colunaAnoLancamento.innerText = item.anoLancamento;
+
+                colunaAcao = document.createElement("td")
+                
+                let btnRemover = document.createElement("input");
+                btnRemover.type = "button";
+                btnRemover.value = "Remover";
+                btnRemover.className = "btn btn-danger"
+                btnRemover.setAttribute("onclick", "remover("+ item.id +")")
+
+                let btnEditar = document.createElement("input");
+                btnEditar.type = "button";
+                btnEditar.value = "Editar";
+                btnEditar.className = "btn btn-success"
+                //btnEditar.style.background = 'green';
+                btnEditar.setAttribute("onclick", "editar("+ item.id +")")
+
+                colunaAcao.appendChild(btnRemover);
+                colunaAcao.appendChild(btnEditar);
+
+                linha.appendChild(colunaId);
+                linha.appendChild(colunaNome);
+                linha.appendChild(colunaCategoria);
+                linha.appendChild(colunaAnoLancamento);
+                linha.appendChild(colunaAcao);
+
+                corpoTabela.appendChild(linha);
+            })
+        }
+    
+        const remover = (id) => {
+            
+                fetch(url + '/' + id,{
+                    method : 'DELETE'
+                })
+                .then(response => response.json())
+                .then(dados => {
+                    alert('Filme removido');
+
+                    listar();
+                })
+
+        }
+   
+        const editar = (id) => {
+            fetch(url + '/' + id, {
+                method : 'GET'
+            })
+            .then(response => response.json())
+            .then(dado => {
+                document.querySelector('#filmeId').value = dado.id;
+                document.querySelector('#nome').value = dado.nome;
+                document.querySelector('#categoria').value = dado.categoria;
+                document.querySelector('#anoLancamento').value = dado.anoLancamento;
+            })
+        }
+    
+        const novoFilme = () => {
+            document.querySelector('#formFilme').reset();
+            document.querySelector('#filmeId').value = "";
+            document.querySelector('#nome').focus();
+        }
+   
+        const salvar = () => {
+            event.preventDefault();
+
+            const filme = {
+                nome : document.querySelector('#nome').value,
+                categoria : document.querySelector('#categoria').value,
+                anoLancamento : document.querySelector('#anoLancamento').value,
+            }
+
+            //if ternário para saber se vai fazer um post ou put
+            let method = (document.querySelector('#filmeId').value === "" ? 'POST' : 'PUT');
+            let urlRequest = (document.querySelector('#filmeId').value === "" ? url :  url + '/' + document.querySelector('#filmeId').value);
+
+            fetch(urlRequest, {
+                method : method,
+                body : JSON.stringify(filme),
+                headers : {
+                    'content-type' : 'application/json'
+                }
+            })
+            .then(response => response.json())
+            .then(dados => {
+                alert('Filme savo');
+
+                listar();
+            })
+            .catch(err => console.error(err))
+        }
+    </script>
+</body>
+
+</html>

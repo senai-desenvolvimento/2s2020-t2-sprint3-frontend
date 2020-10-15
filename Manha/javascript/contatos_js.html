@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contatos</title>
+</head>
+<body onload="listar()">
+    <input type="text" id="nome" required/>
+    <input type="text" id="email" required/>
+    <input type="text" id="telefone" required/>
+
+    <button type="button" id='btnCadastrar'>Cadastrar</button>
+    <button type="button" id='btnRemover'>Remover</button>
+
+    <table>
+        <caption>Contatos</caption>
+        <thead>
+            <th>Nome</th>
+            <th>Email</th>
+            <th>Telefone</th>
+        </thead>
+        <tbody id="tabela-lista-corpo"></tbody>
+    </table>   
+
+    <script>
+        let contatos = [{ 
+                            nome : 'Fernando',
+                            email : 'fernando.guerra@sp.senai.br',
+                            telefone : '11972084334'
+                        }]
+
+        let btnCadastrar = document.querySelector('#btnCadastrar')
+        btnCadastrar.addEventListener('click', cadastrar);
+
+        let btnRemover = document.querySelector('#btnRemover')
+        btnRemover.addEventListener('click', remover);
+
+        //Pego os valores com querySelector usando # para o id
+        let nome = document.querySelector('#nome');
+        let email = document.querySelector('#email');
+        let telefone = document.querySelector('#telefone');
+
+        function listar(){
+            //Pega o elemento e armazena na variavel
+            let corpoTabela = document.querySelector('#tabela-lista-corpo');
+
+            //limpa o elemento corpoTabela
+            corpoTabela.innerHTML = "";
+            //Declara variaveis
+            let linha, colunaNome, colunaEmail, colunaTelefone;
+
+            //Percorre o array frutas
+            //item representa cada elemento/objeto no array
+            contatos.forEach(item => {
+                //Criação do elemento tr
+                linha = document.createElement('tr');
+
+                //Criação do elemento td
+                colunaNome = document.createElement('td');
+                //Preenche o elemento td com o dado do array
+                colunaNome.innerHTML = item.nome;
+                //Inclui a coluna na linha
+                linha.appendChild(colunaNome);
+
+                //Email
+                colunaEmail = document.createElement('td');
+                //Preenche o elemento td com o dado do array
+                colunaEmail.innerHTML = item.email;
+                //Inclui a coluna na linha
+                linha.appendChild(colunaEmail);
+
+                //Telefone
+                colunaTelefone = document.createElement('td');
+                //Preenche o elemento td com o dado do array
+                colunaTelefone.innerHTML = item.telefone;
+                //Inclui a coluna na linha
+                linha.appendChild(colunaTelefone);
+
+                //Inclui a linha no tbody da tabela
+                corpoTabela.appendChild(linha);
+            });
+
+            limparCampos();
+        }
+    
+        function cadastrar(event){
+            event.preventDefault();
+
+            //crio um objeto com os dados do formulário
+            let contato = {
+                nome : nome.value,
+                email : email.value,
+                telefone : telefone.value
+            }
+
+            contatos.push(contato);
+
+            alert('Contato cadastrado');
+
+            listar();
+        }
+
+        function remover(event){
+            event.preventDefault();
+
+            //Busca o indice do array pelo nome, array de string ou int
+            //let index = contatos.indexOf(email.value);
+
+            let index = contatos.findIndex(item => item.email === email.value);
+
+            if(index > -1){
+                contatos.splice(index, 1);
+                alert('Contato removido');
+                listar();
+            } else {
+                alert('Contato não encontrado');
+            }
+        }
+
+        function limparCampos(){
+            nome.value = "";
+            email.value = "";
+            telefone.value = "";
+
+            nome.focus();
+        }
+    </script>
+</body>
+</html>

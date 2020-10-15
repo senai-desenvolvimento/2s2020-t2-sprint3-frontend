@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contato</title>
+</head>
+<body>
+    <form>
+        <input type="text" id="nome" required/>
+        <input type="text" id="email" required/>
+        <input type="text" id="telefone" required/>
+        <button type="submit" id="btnCadastrar">Cadastrar</button>
+    </form>
+
+    <script>
+        let btnCadastrar  = document.querySelector('#btnCadastrar');
+
+        btnCadastrar.addEventListener('click', cadastrar);
+
+        function cadastrar(event){
+            event.preventDefault();
+
+            //Pego os valores com querySelector usando # para o id
+            let nome = document.querySelector('#nome');
+            let email = document.querySelector('#email');
+            let telefone = document.querySelector('#telefone');
+
+            //crio um objeto com os dados do formulário
+            let dadosPessoais = {
+                nome : nome.value,
+                email : email.value,
+                telefone : telefone.value
+            }
+
+            //Mostra as informações no console
+            console.log(nome.value + ' - ' + email.value + ' - ' + telefone.value);
+            //mostra o objeto no console
+            console.log(dadosPessoais);
+            console.log(JSON.stringify(dadosPessoais));
+        }
+    </script>
+</body>
+</html>

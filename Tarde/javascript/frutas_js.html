@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tabela Frutas</title>
+</head>
+<body onload="listar()">
+    <input type="text" required id='fruta' />
+    <button type="button" id='btnCadastrar'>Cadastrar</button>
+    <button type="button" id='btnRemover'>remover</button>
+    <table>
+        <caption>Frutas</caption>
+        <thead>
+            <th>
+                Nome
+            </th>
+        </thead>
+        <tbody id="tabela-lista-corpo">
+            
+        </tbody>
+    </table>   
+
+    <script>
+        //Array string
+        let frutas = ['maça', 'morango', 'pessego'];
+
+        //Array de inteiros
+        //let numeros = [ 5, 10, 13];
+
+        //Array de objetos
+        //let pessoas = [{ id : 1, nome : 'Fernando'}, { id : 2, nome : 'Rodrigo'}]
+
+
+        let btnCadastrar = document.querySelector('#btnCadastrar');
+        btnCadastrar.addEventListener('click', cadastrar);
+
+        let btnRemover = document.querySelector('#btnRemover');
+        btnRemover.addEventListener('click', remover);
+
+        function listar(){
+            let corpoTabela = document.querySelector('#tabela-lista-corpo'); //<tbody></tbody>
+            //Limpa o tbody da tabela
+            corpoTabela.innerHTML = "";
+
+            //Irá armazenar os elemento tr e td
+            let linha, colunaNome;
+
+            //Percorrendo o array
+            //Item é a referencia ao meu elemento/objeto no array
+            frutas.forEach(item => {
+                linha = document.createElement('tr'); //<tr></tr>
+                colunaNome = document.createElement('td');//<td></td>
+
+                colunaNome.innerText = item; //<td>Maça</td>
+            
+                linha.appendChild(colunaNome); //<tr><td>Maça</td></tr>
+                corpoTabela.appendChild(linha); //<tbody><tr><td>Maça</td></tr></tbody>
+            });
+        }
+
+        function cadastrar(event){
+            event.preventDefault();
+
+            let fruta = document.querySelector('#fruta');
+
+            frutas.push(fruta.value);
+
+            fruta.value = '';
+            fruta.focus();
+            
+            listar();
+
+            alert('Fruta Cadastrada');
+        }
+        
+        function remover(event){
+            event.preventDefault();
+
+            //pega o nome da fruta
+            let fruta = document.querySelector('#fruta');
+            //verifica se existe no array
+            // frutas.forEach(item => {
+            //     if(item == fruta.value){
+            //         //remove fruta
+            //     }
+            // })
+
+            let index = frutas.indexOf(fruta.value);
+            console.log(index);
+
+            //existindo exclui
+            if(index > -1){
+                frutas.splice(index, 1)
+                alert('Fruta removida');
+                fruta.value = '';
+
+                listar();
+            } else {
+                alert('Fruta não encontrada');
+            }
+
+            //não existe envia alerta
+        }
+    </script>
+</body>
+</html>
