@@ -16,7 +16,7 @@ const Menu = () => {
                     <Nav.Link href="/cadastrar">Cadastrar</Nav.Link>
                 </Nav>
             </Navbar.Collapse>
-    </Navbar>
+        </Navbar>
     )
 }
 

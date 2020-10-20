@@ -4,6 +4,7 @@ import './index.css';
 import Home from './pages/home';
 import Login from './pages/login'
 import Cadastrar from './pages/cadastrar';
+import Eventos from './pages/eventos';
 import NaoEncontrada from './pages/naoencontrada';
 
 import * as serviceWorker from './serviceWorker';
@@ -18,6 +19,7 @@ const routing = (
           <Route exact path='/' component={Home} />
           <Route path='/login' component={Login} />
           <Route path='/cadastrar' component={Cadastrar} />
+          <Route path='/eventos' component={Eventos} />
           <Route component={NaoEncontrada} />
         </Switch>
       </div>
