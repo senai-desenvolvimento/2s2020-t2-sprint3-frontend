@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
+import jwt_decode from "jwt-decode";
 
 import logo from '../../assets/img/Logo.svg';
 import { Container, Form, Button } from 'react-bootstrap'
@@ -44,11 +45,16 @@ const Login = () => {
             alert('Dados inválidos')
         })
         .then(data => {
-            console.log(data);
-
             localStorage.setItem('token-nyous', data.token)
 
-            history.push("/eventos");
+            let usuario = jwt_decode(data.token);
+
+            if(usuario.role === 'Admin'){
+                history.push('/admin/dashboard');
+            } else {
+                history.push('/eventos')
+            }
+            
         })
         .catch(err => console.error(err))
     }
