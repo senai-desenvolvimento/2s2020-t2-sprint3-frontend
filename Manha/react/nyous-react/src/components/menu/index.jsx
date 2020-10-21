@@ -42,7 +42,7 @@ const Menu = () => {
         } else {
             return (
                 <Nav>
-                    <Nav.Link href="/admin/dashboard">Eventos</Nav.Link>
+                    <Nav.Link href="/eventos">Eventos</Nav.Link>
                     <NavDropdown title={jwt_decode(token).family_name} id="basic-nav-dropdown">
                         <NavDropdown.Item href="/perfil">Perfil</NavDropdown.Item>
                         <NavDropdown.Divider />
