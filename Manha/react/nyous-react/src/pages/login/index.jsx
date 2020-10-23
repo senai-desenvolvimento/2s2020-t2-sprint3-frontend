@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import jwt_decode from "jwt-decode";
 
+import {url} from '../../utils/constants';
+
 import logo from '../../assets/img/Logo.svg';
 import { Container, Form, Button } from 'react-bootstrap'
 import Menu from '../../components/menu'
@@ -28,7 +30,7 @@ const Login = () => {
             senha : senha
         }
 
-        fetch('http://localhost:5000/api/account/login',{
+        fetch(url + '/account/login',{
             method : 'POST',
             body : JSON.stringify(login),
             headers : {
