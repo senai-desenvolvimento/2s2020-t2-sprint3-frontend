@@ -44,9 +44,9 @@ const routing = (
   <Router>
     <Switch>
       <Route exact path='/' component={Home} />
-      <Route path='/login'  component={Login} />
+      <Route path='/login' component={Login} />
       <Route path='/cadastrar' component={Cadastrar} />
-      <RotaPrivada path='/eventos' component={Eventos} />
+      <RotaPrivada path='/eventos'  titulo="login" component={Eventos} />
       <RotaPrivadaAdmin path='/admin/dashboard' component={DashBoard} />
       <RotaPrivadaAdmin path='/admin/categorias' component={CrudCategorias} />
       <RotaPrivadaAdmin path='/admin/eventos' component={CrudEventos} />
